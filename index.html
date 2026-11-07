@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DualSense Music Studio — PS5 Kontrolcülü PC Müzik Üretim Stüdyosu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- ÜST STÜDYO DURUM ÇUBUĞU -->
+    <header class="studio-header">
+        <div class="brand-area">
+            <div class="ps5-logo-badge">PS5 🎵 DAW</div>
+            <div>
+                <h1>DualSense PC Music Studio</h1>
+                <p>Gerçek Ses Bankalı Çoklu Enstrüman, Melodi İcrası &amp; WAV / MIDI Kayıt Stüdyosu</p>
+            </div>
+        </div>
+        <div class="status-pills">
+            <span id="controller-status" class="status-pill status-idle">
+                🎮 PS5 Kolu Bekleniyor (Bir Tuşa Basın veya Klavye Kullanın)
+            </span>
+            <span id="soundbank-status" class="status-pill status-ready">
+                🔊 MusyngKite Gerçek Enstrüman Ses Bankası Hazır
+            </span>
+        </div>
+    </header>
+
+    <!-- ANA STÜDYO DÜZENİ -->
+    <main class="studio-layout">
+
+        <!-- SOL SÜTUN: ETKİLEŞİMLİ PS5 KOLU, SAĞ ANALOG DİYEZ/BEMOL, KAYIT VE WAV/MIDI ÇIKTISI -->
+        <section class="left-column">
+
+            <!-- Canlı Çalınan Nota & Spektrum Monitörü -->
+            <div class="live-monitor-card">
+                <div>
+                    <div id="live-note-display" class="live-note-big">Do4 (C4)</div>
+                    <div id="live-inst-display" class="live-inst-sub">🎹 Akustik Kuyruklu Piyano • Çalmaya Hazır</div>
+                </div>
+                <canvas id="spectrum-canvas" width="175" height="52"></canvas>
+            </div>
+
+            <!-- Etkileşimli PS5 DualSense Görsel Şeması -->
+            <div class="panel-box">
+                <div class="controller-svg-wrapper">
+                    <svg class="dualsense-svg" viewBox="0 0 500 310" xmlns="http://www.w3.org/2000/svg">
+                        <!-- L2 & R2 Triggers -->
+                        <g id="svg-btn-l2" class="svg-btn" data-btn-id="l2">
+                            <rect x="82" y="10" width="76" height="26" rx="8" fill="#a855f7" opacity="0.85"/>
+                            <text id="svg-label-l2" x="120" y="27" text-anchor="middle" class="svg-label-tag">L2</text>
+                        </g>
+                        <g id="svg-btn-r2" class="svg-btn" data-btn-id="r2">
+                            <rect x="342" y="10" width="76" height="26" rx="8" fill="#14b8a6" opacity="0.85"/>
+                            <text id="svg-label-r2" x="380" y="27" text-anchor="middle" class="svg-label-tag">R2</text>
+                        </g>
+
+                        <!-- L1 & R1 Bumpers -->
+                        <g id="svg-btn-l1" class="svg-btn" data-btn-id="l1">
+                            <rect x="76" y="42" width="88" height="26" rx="8" fill="#8b5cf6"/>
+                            <text id="svg-label-l1" x="120" y="59" text-anchor="middle" class="svg-label-tag">L1</text>
+                        </g>
+                        <g id="svg-btn-r1" class="svg-btn" data-btn-id="r1">
+                            <rect x="336" y="42" width="88" height="26" rx="8" fill="#06b6d4"/>
+                            <text id="svg-label-r1" x="380" y="59" text-anchor="middle" class="svg-label-tag">R1</text>
+                        </g>
+
+                        <!-- DualSense Body Silhouette -->
+                        <path d="M 95 75 Q 250 62 405 75 Q 462 120 442 250 Q 430 295 385 285 L 335 225 Q 250 232 165 225 L 115 285 Q 70 295 58 250 Q 38 120 95 75 Z"
+                              fill="#1e293b" stroke="#475569" stroke-width="3"/>
+
+                        <!-- Touchpad Area -->
+                        <rect x="178" y="76" width="144" height="62" rx="10" fill="#0f172a" stroke="#3b82f6" stroke-width="1.5"/>
+                        <text x="250" y="104" text-anchor="middle" fill="#60a5fa" font-size="10" font-weight="700">PS5 DUALSENSE</text>
+                        <text x="250" y="120" text-anchor="middle" fill="#94a3b8" font-size="8.5">Share: Mod Değiştir | Options: Kayıt</text>
+
+                        <!-- SOL YÖN TUŞLARI (D-PAD) -->
+                        <g id="svg-btn-up" class="svg-btn" data-btn-id="up">
+                            <rect x="102" y="92" width="38" height="28" rx="6" fill="#f59e0b"/>
+                            <text id="svg-label-up" x="121" y="110" text-anchor="middle" class="svg-label-tag">▲</text>
+                        </g>
+                        <g id="svg-btn-down" class="svg-btn" data-btn-id="down">
+                            <rect x="102" y="154" width="38" height="28" rx="6" fill="#f97316"/>
+                            <text id="svg-label-down" x="121" y="172" text-anchor="middle" class="svg-label-tag">▼</text>
+                        </g>
+                        <g id="svg-btn-left" class="svg-btn" data-btn-id="left">
+                            <rect x="62" y="123" width="38" height="28" rx="6" fill="#eab308"/>
+                            <text id="svg-label-left" x="81" y="141" text-anchor="middle" class="svg-label-tag">◄</text>
+                        </g>
+                        <g id="svg-btn-right" class="svg-btn" data-btn-id="right">
+                            <rect x="142" y="123" width="38" height="28" rx="6" fill="#84cc16"/>
+                            <text id="svg-label-right" x="161" y="141" text-anchor="middle" class="svg-label-tag">►</text>
+                        </g>
+
+                        <!-- SAĞ AKSİYON TUŞLARI (△, ○, ✕, □) -->
+                        <g id="svg-btn-triangle" class="svg-btn" data-btn-id="triangle">
+                            <rect x="358" y="90" width="44" height="28" rx="14" fill="#10b981"/>
+                            <text id="svg-label-triangle" x="380" y="108" text-anchor="middle" class="svg-label-tag">△</text>
+                        </g>
+                        <g id="svg-btn-cross" class="svg-btn" data-btn-id="cross">
+                            <rect x="358" y="156" width="44" height="28" rx="14" fill="#3b82f6"/>
+                            <text id="svg-label-cross" x="380" y="174" text-anchor="middle" class="svg-label-tag">✕</text>
+                        </g>
+                        <g id="svg-btn-square" class="svg-btn" data-btn-id="square">
+                            <rect x="312" y="123" width="44" height="28" rx="14" fill="#ec4899"/>
+                            <text id="svg-label-square" x="334" y="141" text-anchor="middle" class="svg-label-tag">□</text>
+                        </g>
+                        <g id="svg-btn-circle" class="svg-btn" data-btn-id="circle">
+                            <rect x="404" y="123" width="44" height="28" rx="14" fill="#ef4444"/>
+                            <text id="svg-label-circle" x="426" y="141" text-anchor="middle" class="svg-label-tag">○</text>
+                        </g>
+
+                        <!-- Sol Analog (Efekt / Filtre) -->
+                        <circle cx="190" cy="195" r="26" fill="#0f172a" stroke="#475569" stroke-width="2"/>
+                        <circle id="svg-lstick" cx="190" cy="195" r="14" fill="#334155" stroke="#38bdf8" stroke-width="2"/>
+                        <text x="190" y="234" text-anchor="middle" fill="#94a3b8" font-size="8.5">Sol Analog: Efekt/Filtre</text>
+
+                        <!-- Sağ Analog (Diyez # / Bemol b) -->
+                        <circle cx="310" cy="195" r="26" fill="#0f172a" stroke="#f59e0b" stroke-width="2"/>
+                        <circle id="svg-rstick" cx="310" cy="195" r="14" fill="#334155" stroke="#fbbf24" stroke-width="2"/>
+                        <text x="310" y="234" text-anchor="middle" fill="#fbbf24" font-size="8.5" font-weight="700">Sağ Analog: ♭ Bemol / ♯ Diyez</text>
+                    </svg>
+                </div>
+
+                <!-- Sağ Analog Diyez (#) ve Bemol (b) Canlı Gösterge ve Test Çubuğu -->
+                <div class="accidental-control-bar">
+                    <div class="acc-header">
+                        <span><strong>Sağ Joystick (R-Stick):</strong> Sola/Aşağı = Bemol (♭) | Sağa/Yukarı = Diyez (♯)</span>
+                        <span id="accidental-live-badge" class="acc-badge natural">♮ DOĞAL NOTA</span>
+                    </div>
+                    <div class="acc-buttons">
+                        <button id="btn-acc-flat" class="btn-acc" title="Klavye: Sol/Aşağı Ok">◄ ♭ Bemol (-1 Yarım Ses)</button>
+                        <button id="btn-acc-nat" class="btn-acc active">♮ Doğal (Merkez)</button>
+                        <button id="btn-acc-sharp" class="btn-acc" title="Klavye: Sağ/Yukarı Ok">♯ Diyez (+1 Yarım Ses) ►</button>
+                    </div>
+                </div>
+
+                <!-- Ses Yüksekliği & Yankı (Reverb) Ayarları -->
+                <div class="fx-sliders-row">
+                    <div class="slider-group">
+                        <label>🔊 Ana Ses Seviyesi (Master Volume)</label>
+                        <input id="slider-volume" type="range" min="0" max="1.1" step="0.02" value="0.85">
+                    </div>
+                    <div class="slider-group">
+                        <label>🏛️ Stüdyo Yankısı (Reverb / Sol Analog)</label>
+                        <input id="slider-reverb" type="range" min="0" max="0.9" step="0.02" value="0.25">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ÇOK KANALLI KAYIT (MULTI-TRACK LOOPER), PIANO ROLL & WAV / MIDI ÇIKTISI -->
+            <div class="panel-box">
+                <div class="recorder-header">
+                    <h3>🎙️ Stüdyo Kayıt, Katmanlama &amp; Dışa Aktarma (.WAV / .MID)</h3>
+                    <div>
+                        <span id="active-track-badge" class="status-pill">Aktif Katman: Kanal 1</span>
+                        <span id="recorded-count" class="status-pill">0 Nota</span>
+                    </div>
+                </div>
+
+                <div class="transport-row">
+                    <button id="btn-record" class="btn-studio btn-record">⏺ Kaydı Başlat (Options)</button>
+                    <button id="btn-play" class="btn-studio">▶ Kaydı Dinle</button>
+                    <button id="btn-new-track" class="btn-studio" title="Önceki kaydın üstüne yeni bir enstrüman katmanı ekle">➕ Yeni Kanal Katmanı</button>
+                    <button id="btn-clear" class="btn-studio">🗑️ Temizle</button>
+                    <button id="btn-metronome" class="btn-studio">⏱️ Metronom</button>
+                    <input id="bpm-input" type="number" class="bpm-number" value="120" min="40" max="240" style="width:68px" title="Tempo (BPM)">
+                </div>
+
+                <!-- Canlı Piano Roll Zaman Çizelgesi -->
+                <canvas id="pianoroll-canvas" width="420" height="90" style="width:100%; border-radius:10px; border:1px solid rgba(255,255,255,0.08);"></canvas>
+
+                <!-- WAV ve MIDI İndirme Butonları -->
+                <div class="export-row">
+                    <button id="btn-export-wav" class="btn-studio btn-export-wav">
+                        💾 .WAV Ses Dosyası İndir (44.1kHz)
+                    </button>
+                    <button id="btn-export-midi" class="btn-studio btn-export-midi">
+                        🎼 .MID (MIDI) Nota Dosyası İndir
+                    </button>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- SAĞ SÜTUN: MOD 1 (SERBEST ENSTRÜMAN ATAMA) & MOD 2 (DOĞRUDAN NOTA MODU) -->
+        <section class="right-column">
+
+            <div class="panel-box">
+                <!-- Mod Seçici Sekmeler & Özel WAV/MP3 Yükleme -->
+                <div class="mode-tabs-bar">
+                    <div class="mode-tabs">
+                        <button id="tab-mode2" class="mode-tab-btn active">
+                            🎼 MOD 2: Doğrudan Nota Modu (8 Tuş + Diyez/Bemol + Yön Tuşları)
+                        </button>
+                        <button id="tab-mode1" class="mode-tab-btn">
+                            🎛️ MOD 1: Serbest Enstrüman &amp; Nota Atama (12 Tuş Ayrı Enstrüman)
+                        </button>
+                    </div>
+
+                    <label class="custom-upload-label" title="Bilgisayarınızdan kendi .wav veya .mp3 sesinizi enstrüman olarak ekleyin">
+                        📂 Bilgisayardan Ses (.WAV/.MP3) Yükle
+                        <input id="custom-sample-input" type="file" accept=".wav,.mp3,.ogg,.flac" style="display:none">
+                    </label>
+                </div>
+
+                <!-- ==================== MOD 2 PANELİ: DOĞRUDAN NOTA MODU ==================== -->
+                <div id="panel-mode2">
+                    <div class="mode-toolbar">
+                        <div class="toolbar-field" style="flex:2">
+                            <label>🎻 Çalınacak Enstrüman (Gerçek Ses Bankası)</label>
+                            <select id="mode2-instrument" class="studio-select"></select>
+                        </div>
+                        <div class="toolbar-field">
+                            <label>🎵 Kök Nota (Ton)</label>
+                            <select id="mode2-root" class="studio-select">
+                                <option value="C">Do (C)</option>
+                                <option value="C#">Do# / Reb (C#)</option>
+                                <option value="D">Re (D)</option>
+                                <option value="D#">Re# / Mib (D#)</option>
+                                <option value="E">Mi (E)</option>
+                                <option value="F">Fa (F)</option>
+                                <option value="F#">Fa# / Solb (F#)</option>
+                                <option value="G">Sol (G)</option>
+                                <option value="G#">Sol# / Lab (G#)</option>
+                                <option value="A">La (A)</option>
+                                <option value="A#">La# / Sib (A#)</option>
+                                <option value="B">Si (B)</option>
+                            </select>
+                        </div>
+                        <div class="toolbar-field">
+                            <label>🎹 Oktav Aralığı</label>
+                            <select id="mode2-octave" class="studio-select">
+                                <option value="2">Oktav 2 (Kalın Bas)</option>
+                                <option value="3">Oktav 3 (Orta Kalın)</option>
+                                <option value="4" selected>Oktav 4 (Standart Orta)</option>
+                                <option value="5">Oktav 5 (İnce / Solo)</option>
+                                <option value="6">Oktav 6 (Çok İnce)</option>
+                            </select>
+                        </div>
+                        <div class="toolbar-field" style="flex:1.6">
+                            <label>🎼 Gam / Makam Dizilimi</label>
+                            <select id="mode2-scale" class="studio-select">
+                                <option value="major">Do Majör / Doğal (Do-Re-Mi-Fa-Sol-La-Si-Do)</option>
+                                <option value="minor">Doğal Minör / Nihavend</option>
+                                <option value="hicaz">Hicaz Makamı</option>
+                                <option value="kurdi">Kürdi Makamı</option>
+                                <option value="harmonic_minor">Armonik Minör</option>
+                                <option value="pentatonic">Pentatonik</option>
+                            </select>
+                        </div>
+                        <div class="toolbar-field" style="flex:1.8">
+                            <label>🎮 Sol Yön Tuşları (D-Pad) Görevi</label>
+                            <select id="mode2-dpad-mode" class="studio-select">
+                                <option value="drums">🥁 Bateri Ritim Eşliği (Kick, Snare, Hi-Hat, Clap)</option>
+                                <option value="extra_notes">🎶 Ekstra 4 Nota (Toplam 12 Notalı Klavye)</option>
+                                <option value="navigation">⚡ Hızlı Oktav (+/-) &amp; Enstrüman Değiştirici</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="section-subtitle">
+                        <span>🎹 8 Ana Nota Tuşu (✕, ○, □, △ ve L1, R1, L2, R2) — Sağ Analog ile Diyez (♯) &amp; Bemol (♭)</span>
+                        <span style="font-size:0.75rem; color:#94a3b8;">L2 ve R2 basınca duyarlıdır (ne kadar sert basarsanız o kadar güçlü çalar)</span>
+                    </div>
+                    <div id="mode2-notes-grid" class="mode2-notes-grid"></div>
+
+                    <div class="section-subtitle" style="margin-top:18px;">
+                        <span>🕹️ Sol Yön Tuşları (▲ Yukarı, ▼ Aşağı, ◄ Sol, ► Sağ) — Yukarıdaki Seçime Göre Çalışır</span>
+                    </div>
+                    <div id="mode2-dpad-grid" class="mode2-notes-grid"></div>
+                </div>
+
+                <!-- ==================== MOD 1 PANELİ: SERBEST ENSTRÜMAN & NOTA ATAMA ==================== -->
+                <div id="panel-mode1" class="hidden">
+                    <div class="mode-toolbar">
+                        <div class="toolbar-field" style="flex:2">
+                            <label>✨ Hazır Stüdyo Şablonu (Preset) Yükle</label>
+                            <select id="mode1-preset-select" class="studio-select">
+                                <option value="orchestra">🎻 Senfonik Orkestra &amp; Piyano Seti</option>
+                                <option value="rock_band">🎸 Rock / Gitar Stüdyo Seti</option>
+                                <option value="lofi_hiphop">🎧 Lo-Fi &amp; 808 Beatmaker Seti</option>
+                                <option value="acoustic_east">🪕 Akustik &amp; Doğu Ezgileri Seti</option>
+                            </select>
+                        </div>
+                        <div style="flex:3; font-size:0.8rem; color:#94a3b8; padding-bottom:4px;">
+                            💡 <strong>Serbest Atama Modu:</strong> Aşağıdaki 12 tuşun her birine farklı bir enstrüman, nota, oktav veya akor atayabilirsiniz. Sağ analog (joystick) burada da Diyez (♯) ve Bemol (♭) olarak çalışır!
+                        </div>
+                    </div>
+
+                    <div id="mode1-grid" class="mode1-grid"></div>
+                </div>
+
+                <!-- Kullanım İpuçları -->
+                <div class="guide-banner">
+                    <strong>🎮 PS5 Kolu ve Klavye Hızlı Rehberi:</strong><br>
+                    • <strong>PS5 Kolu Bağlantısı:</strong> Kolunuzu USB kabloyla veya Bluetooth ile PC'ye bağlayıp herhangi bir tuşa basın; otomatik tanınır.<br>
+                    • <strong>Sağ Joystick (Diyez / Bemol):</strong> Sağa veya yukarı ittiğinizde notalar <strong>Diyez (♯)</strong>, sola veya aşağı çektiğinizde <strong>Bemol (♭)</strong> olur.<br>
+                    • <strong>Sol Yön Tuşları (D-Pad):</strong> Mod 2'de ister <strong>Canlı Bateri (Kick/Snare/HiHat/Clap)</strong>, ister <strong>Ekstra 4 Nota (12 Notalı Geniş Mod)</strong>, ister <strong>Oktav/Enstrüman Değiştirici</strong> olarak kullanın; Mod 1'de ise dilediğiniz enstrümanı atayın.<br>
+                    • <strong>PC Klavye Kısayolları:</strong> <code>K, L, J, I</code> (✕, ○, □, △) | <code>Q, E, U, O</code> (L1, R1, L2, R2) | <code>W, A, S, D</code> (Yön Tuşları) | <code>Sağ/Sol Ok</code> (Diyez/Bemol) | <code>Boşluk</code> (Kayıt).
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Bildirim Kutusu -->
+    <div id="studio-toast" class="studio-toast"></div>
+
+    <!-- Scriptler -->
+    <script src="js/soundbank.js"></script>
+    <script src="js/midi-exporter.js"></script>
+    <script src="js/controller.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
